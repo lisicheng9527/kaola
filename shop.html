@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_464326_x4vzi0mhm2muc8fr.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.9/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <title>Document</title>
+    <style>
+        *{padding: 0;margin: 0;}
+        body {
+            font-family: "Microsoft Yahei";
+            font-size: 14px;
+            padding-top: 50px;
+        }
+        .fixhead {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 33;
+        }
+        .header {
+            height: 50px;
+            line-height: 50px;
+            position: sticky;
+            text-align: center;
+            top: 0;
+            font-size: 16px;
+            background-color: #fc0;
+        }
+        .main {
+            display: flex;
+            display: -webkit-flex;
+            flex-grow: 5;
+            -webkit-flex-grow: 5;
+        }
+        .main .left-con {
+            flex: 1;
+            -webkit-flex: 1;
+            height: 100%;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+            background-color: #f5f5f9;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .left-con ul li{
+            text-align: center;
+            padding: 15px 0;
+        }
+        .left-con ul li.active {
+            background-color: #fff;
+        }
+        .main .right-con {
+            flex: 4;
+            -webkit-flex: 4;
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+            -webkit-align-self: stretch;
+            -ms-flex-item-align: stretch;
+            align-self: stretch;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .right-con ul li{
+            display: flex;
+            display: -webkit-flex;
+            flex-grow: 4;
+            -webkit-flex-grow: 4;
+            margin: 12px 0;
+        }
+        .right-con .r-left,.r-right {
+            flex: 1;
+            -webkit-flex: 1;
+        }
+        .r-right {
+            min-width: 86px;
+        }
+        .r-right .f-right {
+            float: right;
+            margin-top: 40px;
+            padding-right: 15px;
+        }
+        .r-right .nums{
+            margin: 0 6px;
+            font-size: 16px;
+        }
+        .thumbnail img {
+            display: block;
+            width: 92px;
+            max-height: 92px;
+            padding: 0 5px;
+            margin: 0 auto;
+        }
+        .g-name {
+            font-size: 16px;
+        }
+        .tags span {
+            border: 1px solid rgb(255, 51, 0);
+            color: rgb(255, 51, 0);
+            border-radius: 8px;
+            padding: 3px 6px;
+            margin: 6px 5px 6px 0;
+            font-size: 12px;
+            display: inline-block;
+        }
+        .g-price span{
+            display: inline-block;
+            margin-right: 10px;
+            color: rgb(255, 51, 0);
+        }
+        .g-price span.old-p {
+            color: #666;
+            text-decoration: line-through;
+        }
+        .right-con .r-cent {
+            flex: 2;
+            -webkit-flex: 2;
+            min-width: 114px;
+        }
+        .footer {
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            z-index: 1003 !important;
+        }
+        .order-panel {
+            position: relative;
+            flex-grow: 2;
+            -webkit-flex-grow: 2;
+            -ms-flex-positive: 2;
+            -moz-flex-grow: 2;
+            display: flex;
+            width: 100%;
+            z-index: 6;
+            background-color: #fff;
+            padding: 10px 0;
+        }
+        .money {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            margin-left: 15px;
+        }
+        .money .car {
+            background-color: #fc0;
+            padding: 8px;
+            position: relative;
+            display: inline-block;
+            border-radius: 50%;
+        }
+        .money .car .bage {
+            color: #fff;
+            background-color: #333;
+            font-size: 12px;
+            position: absolute;
+            top: -6px;
+            font-style: normal;
+            right: -4px;
+            border-radius: 50%;
+            padding: 3px 8px;
+        }
+        .money .car .icon-gouwuche{
+            font-size: 24px;
+            margin-top: 5px;
+            font-weight: 700;
+        }
+        .money .ze {
+            font-size: 18px;
+            margin-left: 16px;
+        }
+        .go-order {
+            text-align: right;
+            margin-right: 15px;
+        }
+        .go-order .order-but {
+            width: 135px;
+            background-color: #fc0;
+            padding: 12px 0;
+            display: inline-block;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="fixhead">
+            <div class="header">购物车</div>
+        </div>
+        <div id="m-main" class="main">
+            <div class="left-con">
+                <ul>
+                    <li class="active" v-for="items in parentList">{{items.label}}</li>
+                </ul>
+            </div>
+            <div class="right-con">
+                <ul>
+                    <li v-for="items in childList">
+                        <div class="r-left">
+                            <div class="thumbnail">
+                                <img v-bind:src="items.img" alt="" />
+                            </div>
+                        </div>
+                        <div class="r-cent">
+                            <div class="g-name">{{items.label}}</div>
+                            <div class="tags">
+                                <span>特价</span>
+                                <span>限购一份</span>
+                            </div>
+                            <div class="g-price">
+                                <span class="new-p">{{items.price}}元</span>
+                                <span class="old-p">{{items.oldprice}}元</span>
+                            </div>
+                        </div>
+                        <div class="r-right">
+                            <div class="f-right">
+                                <span class="iconfont icon-jianshao"></span>
+                                <span class="nums">2</span>
+                                <span class="iconfont icon-tianjia"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="order-panel">
+                <div class="money">
+                    <span class="car">
+                        <i class="iconfont icon-gouwuche"></i>
+                        <i class="bage" style="display: block;">8</i>
+                    </span>
+                    <span class="ze">合计：26.4元</span>
+                </div>
+                <div class="go-order">
+                    <span class="order-but">确认支付</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                parentList:[],
+                childList: []
+            },
+            created: function () {
+                var _this = this;
+                $.ajax({
+                    type: 'GET',
+                    url:'http://api.quanfuxia.com/site/init?category=6',
+                    dataType: 'json',
+                    success: function(data){
+                        _this.parentList = data;
+                        _this.childList = data[0].children;
+                        $('#m-main').height($(window).height()-115+'px');
+                    },
+                    error: function(data){
+                        alert('商品加载失败,请刷新重试！');
+                        console.log(data);
+                    }
+                });
+            }
+        })
+    </script>
+</body>
+</html>
